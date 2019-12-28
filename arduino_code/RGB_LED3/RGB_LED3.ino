@@ -3,7 +3,10 @@
 #define green LED_BUILTIN
 #define delay_ms 100
 
-int movie[6][3] = {
+constexpr int ROWS = 6;
+constexpr int COLUMNS = 3;
+
+int movie[ROWS][COLUMNS] = {
   {0, 0, 1},
   {0, 1, 0},
   {0, 1, 0},
@@ -21,7 +24,7 @@ void setup() {
 
 void loop() {
 
-  for(int i=0;i<6;i++) {
+  for(int i=0;i<ROWS;i++) {
     digitalWrite(green, movie[i][0]);
     digitalWrite(red, movie[i][1]);
     digitalWrite(blue, movie[i][2]);
