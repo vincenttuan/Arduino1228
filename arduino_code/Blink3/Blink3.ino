@@ -1,6 +1,6 @@
-#define red = 10
-#define blue = 9
-#define delay_ms = 100
+#define red 10
+#define blue 9
+#define delay_ms 100
 
 void setup() {
   // put your setup code here, to run once:
