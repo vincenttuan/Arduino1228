@@ -7,10 +7,10 @@ void setup() {
 void loop() {
   if(Serial.available()>0) {
     // int data = Serial.read();
-    char data = Serial.read();
+    // char data = Serial.read();
+    String data = Serial.readString();
     Serial.print("Arduino got: ");
     Serial.println(data);
-    Serial.println(data, DEC);
-    delay(1000);
+    //Serial.println(data, DEC);
   }
 }
