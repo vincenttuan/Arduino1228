@@ -1,3 +1,4 @@
+#define model_led 11
 #define red 10
 #define blue 9
 #define green LED_BUILTIN
@@ -6,6 +7,7 @@ void setup() {
   pinMode(red, OUTPUT);
   pinMode(blue, OUTPUT);
   pinMode(green, OUTPUT);
+  pinMode(model_led, OUTPUT);
   Serial.begin(9600);
   Serial.println("Serial Control RGB LED !");
 }
@@ -13,9 +15,10 @@ void setup() {
 int mode = 0; // 
 
 void loop() {
+  digitalWrite(model_led, mode);
   if (Serial.available() > 0) {
     char data = Serial.read();
-    Serial.println(data);
+    //Serial.println(data);
     switch (data) {
       case '0': // 閉模式
         mode = 0;
