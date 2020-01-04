@@ -3,6 +3,7 @@
 #define len_pinB 11
 #define sw_pinA A1
 #define sw_pinB A2
+#define buzzer_pin 8
 
 void setup() {
   pinMode(len_pin, OUTPUT);
@@ -10,6 +11,7 @@ void setup() {
   pinMode(len_pinB, OUTPUT);
   pinMode(sw_pinA, INPUT_PULLUP);
   pinMode(sw_pinB, INPUT_PULLUP);
+  pinMode(buzzer_pin, OUTPUT);
   
   Serial.begin(9600);
 }
@@ -37,6 +39,9 @@ void loop() {
   Serial.println(randomNumber);
   digitalWrite(len_pin, HIGH);
   play = true;
+  digitalWrite(buzzer_pin, HIGH);
+  delay(200);
+  digitalWrite(buzzer_pin, LOW);
   
   // 4. Wait click button
   while(play) {
@@ -55,6 +60,14 @@ void loop() {
         ++b;
     }
   }
+
+  for(int i=1;i<=3;i++) {
+    digitalWrite(buzzer_pin, HIGH);
+    delay(70);
+    digitalWrite(buzzer_pin, LOW);
+    delay(70);
+  }
+  
   Serial.print("a=");
   Serial.print(a);
   Serial.print(" b=");
