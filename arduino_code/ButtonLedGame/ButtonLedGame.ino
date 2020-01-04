@@ -39,9 +39,7 @@ void loop() {
   Serial.println(randomNumber);
   digitalWrite(len_pin, HIGH);
   play = true;
-  digitalWrite(buzzer_pin, HIGH);
-  delay(200);
-  digitalWrite(buzzer_pin, LOW);
+  tone(buzzer_pin, 2000, 200);
   
   // 4. Wait click button
   while(play) {
