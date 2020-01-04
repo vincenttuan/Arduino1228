@@ -12,17 +12,17 @@ void setup() {
 int d = 100;
 void loop() {
 
-  analogWrite(r_pin, 255);
+  analogWrite(r_pin, 127);
   analogWrite(g_pin, 0);
   analogWrite(b_pin, 0);
   delay(500);
   analogWrite(r_pin, 0);
-  analogWrite(g_pin, 255);
+  analogWrite(g_pin, 127);
   analogWrite(b_pin, 0);
   delay(500);
   analogWrite(r_pin, 0);
   analogWrite(g_pin, 0);
-  analogWrite(b_pin, 255);
+  analogWrite(b_pin, 127);
   delay(500);
   
 
