@@ -29,6 +29,7 @@ int durations[] = {
 int songLength = sizeof(melody)/sizeof(melody[0]);
 void setup() {
  //We don't need anything here
+ pinMode(13, OUTPUT);
 }
 
 void loop() {
@@ -36,14 +37,18 @@ void loop() {
   // Notice how the iteration variable thisNote is created in the parenthesis
   // The for loop stops when it is equal to the size of the melody array
   for (int thisNote = 0; thisNote < songLength; thisNote++){
+    digitalWrite(13, HIGH);
     // determine the duration of the notes that the computer understands
     // divide 1000 by the value, so the first note lasts for 1000/8 milliseconds
-    int duration = 1100/ durations[thisNote];
+    int duration = 550/ durations[thisNote];
     tone(8, melody[thisNote], duration);
     // pause between notes
     int pause = duration * 1.3;
     delay(pause);
+    digitalWrite(13, LOW);
+    delay(pause);
     // stop the tone
     noTone(8);
+    
   }
 }
