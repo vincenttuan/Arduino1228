@@ -19,7 +19,7 @@ void loop() {
     Serial.println(pos); //顯示目前旋轉格數
     oldpos = pos;
   }
-  delay(1000);
+  //delay(1000);
 }
 
 void EncoderEvent()
