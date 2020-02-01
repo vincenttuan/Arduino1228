@@ -85,6 +85,18 @@ void car() {
       wheelControl();
       printPower();
       break;
+    case 'r':
+      if (!power_enabled) break;
+      wheelControl();
+      analogWrite(M2_pin, 0); // 右輪停止
+      printPower();
+      break;
+    case 'l':
+      if (!power_enabled) break;
+      wheelControl();
+      analogWrite(M1_pin, 0); // 左輪停止
+      printPower();
+      break;    
   }
 
 }
