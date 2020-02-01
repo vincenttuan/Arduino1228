@@ -1,9 +1,9 @@
-#define M1_pin 5 // Left
-#define M2_pin 6 // Right
-#define L1_pin 11 // IN1
-#define L2_pin 12 // IN2
-#define R1_pin 9  // IN3
-#define R2_pin 10 // IN4
+#define M1_pin 5 // Rifgt ENB
+#define M2_pin 6 // Left ENA
+#define L1_pin 12 // IN1 F
+#define L2_pin 11 // IN2 B
+#define R1_pin 10  // IN3 F
+#define R2_pin 9 // IN4 B
 
 void setup() {
   pinMode(L1_pin, OUTPUT);
