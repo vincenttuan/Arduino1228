@@ -7,6 +7,7 @@
 
 #define POWER_LED_PIN 13
 
+boolean forward = true;
 boolean power_enabled = false;
 int default_power = 50;
 int right_power = default_power;
@@ -21,12 +22,12 @@ void setup() {
   pinMode(R2_pin, OUTPUT);
 }
 
-
 void loop() {
   char c = Serial.read();
   switch (c) {
     case '1':
       power_enabled = true;
+      forward = true;
       digitalWrite(POWER_LED_PIN, HIGH);
       analogWrite(M1_pin, default_power);
       analogWrite(M2_pin, default_power);
@@ -42,28 +43,40 @@ void loop() {
       printPower();
       break;
     case '+':
-      if(!power_enabled) break;
+      if (!power_enabled) break;
       right_power = addPower(right_power);
       light_power = addPower(light_power);
-      analogWrite(M1_pin, right_power);
-      analogWrite(M2_pin, light_power);
+      wheelControl();
       printPower();
       break;
     case '-':
-      if(!power_enabled) break;
+      if (!power_enabled) break;
       right_power = subPower(right_power);
       light_power = subPower(light_power);
-      analogWrite(M1_pin, right_power);
-      analogWrite(M2_pin, light_power);
+      wheelControl();
       printPower();
       break;
+    case 'f':
+      if (!power_enabled) break;
+      forward = true;
+      wheelControl();
+      printPower();
+      break;  
+    case 'b':
+      if (!power_enabled) break;
+      forward = false;
+      wheelControl();
+      printPower();
+      break;  
+    case 't':
+      if (!power_enabled) break;
+      right_power = 255;
+      light_power = 255;
+      wheelControl();
+      printPower();
+      break;      
   }
-
-  digitalWrite(L1_pin, HIGH);
-  digitalWrite(L2_pin, LOW);
-  digitalWrite(R1_pin, HIGH);
-  digitalWrite(R2_pin, LOW);
-
+  
 }
 
 int addPower(int power) {
@@ -74,6 +87,24 @@ int addPower(int power) {
 int subPower(int power) {
   power -= 10;
   return power < 0 ? 0 : power;
+}
+
+void wheelControl() {
+
+  analogWrite(M1_pin, right_power);
+  analogWrite(M2_pin, light_power);
+
+  if (forward) {
+    digitalWrite(L1_pin, HIGH);
+    digitalWrite(L2_pin, LOW);
+    digitalWrite(R1_pin, HIGH);
+    digitalWrite(R2_pin, LOW);
+  } else {
+    digitalWrite(L1_pin, LOW);
+    digitalWrite(L2_pin, HIGH);
+    digitalWrite(R1_pin, LOW);
+    digitalWrite(R2_pin, HIGH);  
+  }
 }
 
 void printPower() {
