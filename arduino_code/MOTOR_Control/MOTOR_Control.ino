@@ -7,9 +7,11 @@
 
 #define POWER_LED_PIN 13
 
+boolean power_enabled = false;
 int default_power = 50;
 int right_power = default_power;
 int light_power = default_power;
+
 void setup() {
   Serial.begin(9600);
   pinMode(POWER_LED_PIN, OUTPUT);
@@ -24,6 +26,7 @@ void loop() {
   char c = Serial.read();
   switch (c) {
     case '1':
+      power_enabled = true;
       digitalWrite(POWER_LED_PIN, HIGH);
       analogWrite(M1_pin, default_power);
       analogWrite(M2_pin, default_power);
@@ -32,12 +35,14 @@ void loop() {
       printPower();
       break;
     case '0':
+      power_enabled = false;
       digitalWrite(POWER_LED_PIN, LOW);
       analogWrite(M1_pin, 0);
       analogWrite(M2_pin, 0);
       printPower();
       break;
     case '+':
+      if(!power_enabled) break;
       right_power = addPower(right_power);
       light_power = addPower(light_power);
       analogWrite(M1_pin, right_power);
@@ -45,6 +50,7 @@ void loop() {
       printPower();
       break;
     case '-':
+      if(!power_enabled) break;
       right_power = subPower(right_power);
       light_power = subPower(light_power);
       analogWrite(M1_pin, right_power);
