@@ -12,8 +12,8 @@ boolean forward = true;
 boolean power_enabled = false;
 int default_power = 50;
 int right_power = default_power;
-int light_power = default_power;
-
+int left_power = default_power;
+int delta = 5;
 Timer t; // 宣告 Timer 物件
 
 void setup() {
@@ -39,10 +39,10 @@ void car() {
       power_enabled = true;
       forward = true;
       digitalWrite(POWER_LED_pin, HIGH);
-      analogWrite(M1_pin, default_power);
-      analogWrite(M2_pin, default_power);
       right_power = default_power;
-      light_power = default_power;
+      left_power = default_power;
+      analogWrite(M1_pin, right_power);
+      analogWrite(M2_pin, left_power);
       printPower();
       break;
     case '0':
@@ -55,14 +55,14 @@ void car() {
     case '+':
       if (!power_enabled) break;
       right_power = addPower(right_power);
-      light_power = addPower(light_power);
+      left_power = addPower(left_power);
       wheelControl();
       printPower();
       break;
     case '-':
       if (!power_enabled) break;
       right_power = subPower(right_power);
-      light_power = subPower(light_power);
+      left_power = subPower(left_power);
       wheelControl();
       printPower();
       break;
@@ -81,7 +81,7 @@ void car() {
     case 't':
       if (!power_enabled) break;
       right_power = 255;
-      light_power = 255;
+      left_power = 255;
       wheelControl();
       printPower();
       break;
@@ -96,7 +96,19 @@ void car() {
       wheelControl();
       analogWrite(M2_pin, 0); // 左輪停止
       printPower();
-      break;    
+      break;   
+    case 'y':
+      if (!power_enabled) break;
+      right_power += delta;
+      wheelControl();
+      printPower();
+      break;   
+    case 'x':
+      if (!power_enabled) break;
+      left_power += delta;
+      wheelControl();
+      printPower();
+      break;     
   }
 
 }
@@ -128,7 +140,7 @@ int subPower(int power) {
 void wheelControl() {
 
   analogWrite(M1_pin, right_power);
-  analogWrite(M2_pin, light_power);
+  analogWrite(M2_pin, left_power);
 
   if (forward) {
     digitalWrite(L1_pin, HIGH);
@@ -146,5 +158,5 @@ void wheelControl() {
 void printPower() {
   Serial.print(right_power);
   Serial.print(",");
-  Serial.println(light_power);
+  Serial.println(left_power);
 }
