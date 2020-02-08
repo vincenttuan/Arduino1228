@@ -3,9 +3,9 @@
 void setup() {
    pinMode(LED_PIN,OUTPUT) ;
    digitalWrite(LED_PIN, LOW) ; // 關閉 LED
-   Serial.begin(9600);         // HC-0x bluetooth module(設定已知之速率, 預設:57600)
+   Serial.begin(57600);         // HC-0x bluetooth module(設定已知之速率, 預設:57600, 9600)
    delay(1000);
-   Serial.println("AT+NAME=Demo5678"); // 請改名稱, 預設密碼:0000
+   Serial.println("AT+NAME=你的名稱"); // 請改名稱, 預設密碼:0000
    while(!Serial.available()) ; 
    Serial.read(); // flush feedback message
    digitalWrite(LED_PIN, HIGH) ; // 開啟 LED，恆亮表示修改成功 
