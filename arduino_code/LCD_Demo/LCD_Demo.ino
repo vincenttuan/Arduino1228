@@ -23,11 +23,14 @@ void setup() {
   
   lcd.clear(); // 清空 LCD
   lcd.setCursor(0, 0); //Start at character 0 on line 0
-  lcd.print("Hello World") ;
+  lcd.print("Hello LCD") ;
   lcd.setCursor(0, 1); //Start at character 0 on line 1
-  lcd.print("LCD 123") ;
+  lcd.print("N: ") ;
 }
 
+int n = 0;
 void loop() {
-  
+  lcd.setCursor(3, 1); //character 3 on line 1
+  lcd.print(n++);
+  delay(10);
 }
