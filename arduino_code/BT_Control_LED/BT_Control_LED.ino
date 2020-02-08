@@ -5,7 +5,7 @@
 
 void setup() {
   pinMode(LED_PIN, OUTPUT) ;
-  Serial.begin(9600);         
+  Serial.begin(57600); // 57600 或 9600      
   digitalWrite(LED_PIN, LOW);
 }
 
