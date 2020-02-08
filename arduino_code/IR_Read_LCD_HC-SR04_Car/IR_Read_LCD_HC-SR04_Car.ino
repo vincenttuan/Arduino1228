@@ -16,6 +16,8 @@
 #define TRIGGER_PIN  4 
 #define ECHO_PIN     7
 #define MAX_DISTANCE 200
+#define LED_PIN 13
+#define BUZZER_PIN 8
 
 NewPing sonar(TRIGGER_PIN, ECHO_PIN, MAX_DISTANCE); // NewPing setup of pins and maximum distance.
 LiquidCrystal_I2C  lcd(I2C_ADDR, 2, 1, 0, 4, 5, 6, 7); // 初始 I2C LCD 物件
@@ -27,7 +29,7 @@ int default_power = 150;
 int right_power = default_power;
 int left_power = default_power;
 int distance = MAX_DISTANCE; // cm
-int minDistance = 10; // cm
+int minDistance = 20; // cm
 
 void setup() {
   Serial.begin(9600);
@@ -35,6 +37,9 @@ void setup() {
   pinMode(L2_pin, OUTPUT);
   pinMode(R1_pin, OUTPUT);
   pinMode(R2_pin, OUTPUT);
+  pinMode(LED_PIN, OUTPUT);
+  pinMode(BUZZER_PIN, OUTPUT);
+  
   lcd.begin (16, 2); // LCD 初始
   lcd.setBacklightPin(BACKLIGHT_PIN, POSITIVE); // 設定背光
   lcd.backlight(); // 開啟背光
@@ -58,9 +63,20 @@ void car() {
   if(distance != 0 && distance < minDistance) {
     analogWrite(M1_pin, 0);
     analogWrite(M2_pin, 0);
-    delay(1000);
+    digitalWrite(LED_PIN, HIGH);  
+    for(int i=0;i<10;i++) {
+      if(i % 2 == 1) {
+        digitalWrite(BUZZER_PIN, HIGH);
+      } else {
+        digitalWrite(BUZZER_PIN, LOW);
+      }
+      delay(50);
+    }
+    
     return;  
   }
+  digitalWrite(LED_PIN, LOW);  
+  digitalWrite(BUZZER_PIN, LOW);
   analogWrite(M1_pin, right_power);
   analogWrite(M2_pin, left_power);
   
