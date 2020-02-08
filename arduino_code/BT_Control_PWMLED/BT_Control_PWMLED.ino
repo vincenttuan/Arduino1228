@@ -2,7 +2,7 @@
 // 手機請在 Google Play 下載 Arduino bluetooth controller APP
 #include  <SoftwareSerial.h>
 #define LED_PIN 9
-SoftwareSerial BTSerial(11, 10); // BT: RX->11 | TX->10
+SoftwareSerial BTSerial(11, 10); // BT: RX->10 | TX->11
 
 void setup() {
   pinMode(LED_PIN, OUTPUT) ;
