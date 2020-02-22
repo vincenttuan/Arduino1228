@@ -69,11 +69,11 @@ public class DoorJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
     
-    // 給外部程式調用
+    // 給外部程式調用-----------------------------
     public void setDoorValue(String text) {
         doorValue.setText(text);
     }
-    
+    // -----------------------------------------
     /**
      * @param args the command line arguments
      */
@@ -104,6 +104,7 @@ public class DoorJFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                // -----------------------------------------
                 DoorJFrame doorJFrame = new DoorJFrame();
                 doorJFrame.setVisible(true);
                 try {
@@ -111,6 +112,7 @@ public class DoorJFrame extends javax.swing.JFrame {
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
+                // -----------------------------------------
             }
         });
     }
