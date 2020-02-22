@@ -7,18 +7,19 @@ package com.smart.door;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 
 /**
  *
  * @author MB-teacher
  */
 public class DoorJFrame extends javax.swing.JFrame {
-
-    /**
-     * Creates new form DoorJFrame
-     */
+    ImageIcon icon_close_door;
+    ImageIcon icon_open_door;
     public DoorJFrame() {
         initComponents();
+        icon_close_door = new ImageIcon("src\\main\\java\\com\\smart\\door\\close.png");
+        icon_open_door = new ImageIcon("src\\main\\java\\com\\smart\\door\\open.png");
     }
 
     /**
@@ -40,30 +41,27 @@ public class DoorJFrame extends javax.swing.JFrame {
         jLabel1.setText("我家大門");
 
         doorValue.setFont(new java.awt.Font("新細明體", 0, 48)); // NOI18N
-        doorValue.setText("jLabel2");
+        doorValue.setText("關門");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(97, 97, 97)
-                        .addComponent(jLabel1))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(128, 128, 128)
-                        .addComponent(doorValue)))
-                .addContainerGap(111, Short.MAX_VALUE))
+                .addGap(97, 97, 97)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(doorValue, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(198, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(38, 38, 38)
                 .addComponent(jLabel1)
-                .addGap(30, 30, 30)
+                .addGap(28, 28, 28)
                 .addComponent(doorValue)
-                .addContainerGap(114, Short.MAX_VALUE))
+                .addContainerGap(231, Short.MAX_VALUE))
         );
 
         pack();
@@ -71,7 +69,13 @@ public class DoorJFrame extends javax.swing.JFrame {
     
     // 給外部程式調用-----------------------------
     public void setDoorValue(String text) {
+        // 設定文字
         doorValue.setText(text);
+        // 設定icon
+        if(text.equals("關門"))
+            doorValue.setIcon(icon_close_door);
+        else
+            doorValue.setIcon(icon_open_door);
     }
     // -----------------------------------------
     /**
