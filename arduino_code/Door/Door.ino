@@ -10,11 +10,6 @@ void setup() {
 
 void loop() {
   doorValue = digitalRead(DOOR_PIN);
-  if(doorValue) {
-    Serial.print("OPEN - ");
-  } else {
-    Serial.print("CLOSE - ");    
-  }
   Serial.println(doorValue);
   delay(100);
 }
