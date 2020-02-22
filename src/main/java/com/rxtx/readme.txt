@@ -5,7 +5,7 @@ Arduino RXTX Java
 Windows 下安裝 RXTX
 複製 rxtxParallel.dll 到 C:\Program Files\java\openjdk-1.8.0.171\jre\bin
 複製 rxtxSerial.dll 到 C:\Program Files\java\openjdk-1.8.0.171\jre\bin
-複製 RXTXcomm.jar 到 C:\Program Files\java\openjdk-1.8.0.171\jre\bin\ext
+複製 RXTXcomm.jar 到 C:\Program Files\java\openjdk-1.8.0.171\jre\lib\ext
 說明頁 : https://blog.csdn.net/njchenyi/article/details/6361787
 
 Sample Code
