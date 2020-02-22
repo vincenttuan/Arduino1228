@@ -17,7 +17,7 @@ int delta = 5;
 Timer t; // 宣告 Timer 物件
 
 void setup() {
-  Serial.begin(9600);
+  Serial.begin(57600);
   pinMode(POWER_LED_pin, OUTPUT);
   pinMode(L1_pin, OUTPUT);
   pinMode(L2_pin, OUTPUT);
