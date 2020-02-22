@@ -18,8 +18,8 @@ public class DoorJFrame extends javax.swing.JFrame {
     ImageIcon icon_open_door;
     public DoorJFrame() {
         initComponents();
-        icon_close_door = new ImageIcon("src\\main\\java\\com\\smart\\door\\close.png");
-        icon_open_door = new ImageIcon("src\\main\\java\\com\\smart\\door\\open.png");
+        icon_close_door = new ImageIcon("src\\images\\close.png");
+        icon_open_door = new ImageIcon("src\\images\\open.png");
     }
 
     /**
