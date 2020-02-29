@@ -15,5 +15,5 @@ void loop() {
       on = !on;
       digitalWrite(Relay_IN1, on);
   }
-  delay(100);
+  delay(50);
 }
