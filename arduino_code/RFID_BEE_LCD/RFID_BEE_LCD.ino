@@ -32,6 +32,7 @@ void setup() {
   lcd.print("RFID ID:");
   t.every(0, rfid_read);
 }
+
 void loop() {
   t.update();
 }
@@ -42,6 +43,13 @@ void rfid_read() {
     digitalWrite(BUZZER_PIN, HIGH);
     int serNumLength = 5; // rfid.serNum[0] ~ rfid.serNum[4] 共五組
     Serial.println("Card found");
+    
+    // 容量
+    int card_size = rfid.selectTag(rfid.serNum);
+    Serial.print("size: ");
+    Serial.print(card_size);
+    Serial.println(" bits");
+    
     Serial.println("Card ID:");
     Serial.print("Dec: ");
     
