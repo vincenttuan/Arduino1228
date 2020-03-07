@@ -10,7 +10,7 @@ unsigned char    keyA[16] {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xff, 0x07, 0x80,
 
 int key_blockAddr = 11; // 資料驗證區 Data block 11 中的密碼 A
 int data_blockAddr = 8; // 資料撰寫區 Data block 8
-unsigned char str[16];
+
 
 void setup() {
   Serial.begin(9600);
@@ -62,17 +62,18 @@ void loop() {
     Serial.print(data_blockAddr);
     Serial.println(" : ");
 
-    status = rfid.read(data_blockAddr, str);// 將 data_blockAddr 的資料讀進 str (char[])
-    if (status == MI_OK) {
-      Serial.println("Row data is : ");
-      for (int i = 0; i < 16; i++) {
-        Serial.print(str[i], DEC); // HEX, DEC
-        Serial.print(" ");
-      }
-      Serial.println(" ");
-
+    for (int block = 8; block < 9; block++) {
+      unsigned char str[16];
+      status = rfid.read(block, str);// 將 data_blockAddr 的資料讀進 str (char[])
+      if (status == MI_OK) {
+        Serial.print(block);
+        Serial.print(" : ");
+        for (int i = 0; i < 16; i++) {
+          Serial.print(str[i], DEC); // HEX, DEC
+          Serial.print(" ");
+        }
+        Serial.println(" ");      }
     }
-
     rfid.halt();  // Enter Sleep Mode
     delay(500) ; // waiting for 0.5 sec
   }

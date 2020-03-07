@@ -6,11 +6,12 @@
 
 RFID rfid(SS_PIN, RST_PIN);
 
-unsigned char    keyA[16] {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xff, 0x07, 0x80, 0x69, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
+unsigned char keyA[16] {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xff, 0x07, 0x80, 0x69, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
 int key_blockAddr = 11; // 資料驗證區 Data block 11 中的密碼 A
 int data_blockAddr = 8; // 資料撰寫區 Data block 8
 unsigned char str[16];
+int fee = -10;
 
 void setup() {
   Serial.begin(9600);
@@ -18,7 +19,7 @@ void setup() {
   SPI.begin();
   rfid.init();
   delay(1000) ;
-  Serial.println("Read Block :");
+  Serial.println("Update :");
 }
 
 void loop() {
@@ -62,19 +63,41 @@ void loop() {
     Serial.print(data_blockAddr);
     Serial.println(" : ");
 
-    status = rfid.read(data_blockAddr, str);// 將 data_blockAddr 的資料讀進 str (char[])
+    status = rfid.read(data_blockAddr, str);//讀取
     if (status == MI_OK) {
       Serial.println("Row data is : ");
       for (int i = 0; i < 16; i++) {
-        Serial.print(str[i], DEC); // HEX, DEC
+        Serial.print(str[i], DEC);
         Serial.print(" ");
       }
       Serial.println(" ");
 
+      Serial.print("Fee : $");
+      Serial.print(fee, DEC);
+      if((int)str[15] + fee < 0) {
+        Serial.println(" Not enough !");
+      } else {
+        str[15] += fee; // 加/減 Fee  
+        status = rfid.write(data_blockAddr, str);//在block #8的byte #15減去$18後再存入
+        if (status == MI_OK) {
+          Serial.print("  Balance : $");
+          Serial.print(str[15], DEC);
+          Serial.println(" ");
+        }
+
+        rfid.read(data_blockAddr, str);//讀取
+        Serial.println("Row new data is : ");
+        for (int i = 0; i < 16; i++) {
+          Serial.print(str[i], DEC);
+          Serial.print(" ");
+        }
+        Serial.println(" ");
+      }
+
     }
 
-    rfid.halt();  // Enter Sleep Mode
-    delay(500) ; // waiting for 0.5 sec
   }
 
+  rfid.halt();  // Enter Sleep Mode
+  delay(500) ; // waiting for 0.5 sec
 }
