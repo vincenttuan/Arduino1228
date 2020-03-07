@@ -28,7 +28,7 @@ unsigned char str[16];
 void setup() {
   Serial.begin(9600);
   pinMode(BUZZER_PIN, OUTPUT);
-  pinMode(BTN_PIN, INPUT);
+  pinMode(BTN_PIN, INPUT_PULLUP);
   SPI.begin();
   rfid.init();
   Serial.println("0: get balance, 1: add value, 2: sub value, c: clear");
@@ -50,7 +50,7 @@ void loop() {
 }
 
 void changeModeBtn() {
-  int m = digitalRead(BTN_PIN);
+  int m = !digitalRead(BTN_PIN);
   Serial.println(m);
   if (m == 1) {
     switch (mode) {
