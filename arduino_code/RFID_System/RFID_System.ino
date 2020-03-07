@@ -7,7 +7,7 @@
 
 #define RST_PIN 9
 #define SS_PIN 10
-
+#define BTN_PIN 2
 #define BUZZER_PIN 8
 
 #define I2C_ADDR  0x3F  // 定義 I2C Address for the PCF8574T (0x27、0x3F)
@@ -28,6 +28,7 @@ unsigned char str[16];
 void setup() {
   Serial.begin(9600);
   pinMode(BUZZER_PIN, OUTPUT);
+  pinMode(BTN_PIN, INPUT);
   SPI.begin();
   rfid.init();
   Serial.println("0: get balance, 1: add value, 2: sub value, c: clear");
@@ -39,6 +40,7 @@ void setup() {
   lcd.print("Mo:      Fee:    ");
   lcd.setCursor(0, 1);
   lcd.print("ID:      Bal:   ");
+  t.every(1000, changeModeBtn);
   t.every(0, changeMode);
   t.every(0, rfid_read);
 }
@@ -47,32 +49,58 @@ void loop() {
   t.update();
 }
 
+void changeModeBtn() {
+  int m = digitalRead(BTN_PIN);
+  Serial.println(m);
+  if (m == 1) {
+    switch (mode) {
+      case 'c':
+        mode = '0';
+        break;
+      case '0':
+        mode = '1';
+        break;
+      case '1':
+        mode = '2';
+        break;
+      case '2':
+        mode = 'c';
+        break;
+    }
+    displayMode();
+  }
+}
 void changeMode() {
   if (Serial.available() > 0) {
     char c = Serial.read();
-    switch (c) {
-      case '0':
-      case '1':
-      case '2':
-        mode = c;
-        Serial.print("mode: ");
-        Serial.println(mode);
-        lcd.setCursor(0, 0);
-        lcd.print("Mo:");
-        lcd.print(c);
-        lcd.print("     Fee:");
-        lcd.print(fee);
-        lcd.setCursor(0, 1);
-        lcd.print("ID:      Bal:   ");
-        break;
-      case 'c':
-        mode = 'c';
-        lcd.setCursor(0, 0);
-        lcd.print("Mo:      Fee:    ");
-        lcd.setCursor(0, 1);
-        lcd.print("ID:      Bal:   ");
-    }
+    mode = c;
+    displayMode();
   }
+}
+
+void displayMode() {
+  Serial.print("mode: ");
+  switch (mode) {
+    case '0':
+    case '1':
+    case '2':
+      Serial.println(mode);
+      lcd.setCursor(0, 0);
+      lcd.print("Mo:");
+      lcd.print(mode);
+      lcd.print("     Fee:");
+      lcd.print(fee);
+      lcd.setCursor(0, 1);
+      lcd.print("ID:      Bal:   ");
+      break;
+    case 'c':
+      mode = 'c';
+      lcd.setCursor(0, 0);
+      lcd.print("Mo:      Fee:    ");
+      lcd.setCursor(0, 1);
+      lcd.print("ID:      Bal:   ");
+  }
+  
 }
 void rfid_read() {
 
