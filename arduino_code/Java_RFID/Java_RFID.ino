@@ -1,12 +1,14 @@
 #include <SPI.h>
 #include <RFID.h>
 #include <Timer.h>
+#include <HTU21D.h>
+
 #define SS_PIN 10
 #define RST_PIN 9
 #define BUZZER_PIN 8
 
 RFID rfid(SS_PIN, RST_PIN);
-
+HTU21D htu; // 宣告 HTU21D
 unsigned char keyA[16] {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xff, 0x07, 0x80, 0x69, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF};
 
 int key_blockAddr = 11; // 資料驗證區 Data block 11 中的密碼 A
@@ -22,8 +24,10 @@ void setup() {
   pinMode(BUZZER_PIN, OUTPUT);
   SPI.begin();
   rfid.init();
+  htu.begin();
   delay(1000) ;
   t.every(50, readRFID);
+  t.every(50, readHTU21D);
   t.every(50, sendData);
 }
 
@@ -44,6 +48,13 @@ void sendData() {
   Serial.print(",");
   Serial.print(humi);
   Serial.println();
+}
+
+void readHTU21D() {
+  float humidity = htu.readHumidity(); // 取得濕度
+  float temperature = htu.readTemperature(); // 取得溫度
+  temp = temperature;
+  humi = humidity;
 }
 void readRFID() {
   //-----------------------------------
