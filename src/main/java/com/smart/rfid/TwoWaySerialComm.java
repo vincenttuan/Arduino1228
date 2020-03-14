@@ -89,7 +89,7 @@ public class TwoWaySerialComm {
 
         public void run() {
             try {
-                int c = 0;
+                int c = -1;
                 //while ((c = System.in.read()) > -1) {
                 //    this.out.write(c);
                 //    System.out.println(c);
