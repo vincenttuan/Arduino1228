@@ -1,4 +1,4 @@
-package com.rxtx;
+package com.smart.rfid;
 
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
@@ -51,9 +51,20 @@ public class TwoWaySerialComm {
         public void run() {
             byte[] buffer = new byte[1024];
             int len = -1;
+            StringBuilder sb = new StringBuilder();
             try {
                 while ((len = this.in.read(buffer)) > -1) {
-                    System.out.print(new String(buffer, 0, len));
+                    //System.out.print(new String(buffer, 0, len));
+                    String data = new String(buffer, 0, len);
+                    //System.out.print(data);
+                    if(data.equals("\n")) {
+                        // fulldata = 收到完整的 Arduino 資訊
+                        String fulldata = sb.toString().replace("\r", "").replace("\n", "");
+                        System.out.printf("收到資料: %s, 資料長度: %d\n", fulldata, fulldata.length());
+                        sb = new StringBuilder();
+                    } else {
+                        sb.append(data);
+                    }
                 }
             } catch (IOException e) {
                 e.printStackTrace();
