@@ -12,7 +12,9 @@ unsigned char keyA[16] {0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xff, 0x07, 0x80, 0x
 int key_blockAddr = 11; // 資料驗證區 Data block 11 中的密碼 A
 int data_blockAddr = 8; // 資料撰寫區 Data block 8
 unsigned char str[16];
-int fee = -10;
+int balance = 0;
+float temp = 0;
+float humi = 0;
 Timer t; // 宣告 Timer 物件
 
 void setup() {
@@ -22,22 +24,32 @@ void setup() {
   rfid.init();
   delay(1000) ;
   t.every(50, readRFID);
+  t.every(50, sendData);
 }
 
 void loop() {
   t.update();
 }
 
+void sendData() {
+  Serial.print(rfid.serNum[0], HEX);
+  Serial.print(rfid.serNum[1], HEX);
+  Serial.print(rfid.serNum[2], HEX);
+  Serial.print(rfid.serNum[3], HEX);
+  Serial.print(rfid.serNum[4], HEX);
+  Serial.print(",");
+  Serial.print(balance, DEC);
+  Serial.print(",");
+  Serial.print(temp);
+  Serial.print(",");
+  Serial.print(humi);
+  Serial.println();
+}
 void readRFID() {
   //-----------------------------------
   if (rfid.isCard()) {  //　檢查是否偵測到RFID Tag ? 並回傳true/false
     if (rfid.readCardSerial()) { //讀取RFID的ID/序號(4 bytes)與檢查碼(1 byte)
       digitalWrite(BUZZER_PIN, HIGH);
-      Serial.print(rfid.serNum[0], HEX);
-      Serial.print(rfid.serNum[1], HEX);
-      Serial.print(rfid.serNum[2], HEX);
-      Serial.print(rfid.serNum[3], HEX);
-      Serial.print(rfid.serNum[4], HEX);
     }
   }
   //-----------------------------------------
@@ -47,9 +59,7 @@ void readRFID() {
   if (status == MI_OK) {
     status = rfid.read(data_blockAddr, str);//讀取
     if (status == MI_OK) {
-      Serial.print(",");
-      Serial.print(str[15], DEC);
-      Serial.println(" ");
+      balance = (int)str[15];
     }
   }
   delay(150);
