@@ -21,11 +21,11 @@ Timer t; // 宣告 Timer 物件
 
 void setup() {
   Serial.begin(9600);
+  delay(1) ;
   pinMode(BUZZER_PIN, OUTPUT);
   SPI.begin();
   rfid.init();
   htu.begin();
-  delay(1000) ;
   t.every(50, readRFID);
   t.every(50, readHTU21D);
   t.every(50, sendData);
