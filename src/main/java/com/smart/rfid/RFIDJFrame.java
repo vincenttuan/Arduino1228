@@ -11,11 +11,25 @@ package com.smart.rfid;
  */
 public class RFIDJFrame extends javax.swing.JFrame {
 
-    /**
-     * Creates new form RFIDJFrame
-     */
     public RFIDJFrame() {
         initComponents();
+        Callback callback = new Callback() {
+            @Override
+            public void setValue(String fulldata) {
+                String[] dataArray = fulldata.split(",");
+                if (dataArray.length >= 4) {
+                    rfid_id_label.setText(dataArray[0]);
+                    rfid_balance_label.setText(dataArray[1]);
+                    temp_label.setText(dataArray[2]);
+                    humi_label.setText(dataArray[3]);
+                }
+            }
+        };
+        try {
+            (new TwoWaySerialComm(callback)).connect("COM7");
+        } catch (Exception e) {
+        }
+
     }
 
     /**
@@ -37,6 +51,7 @@ public class RFIDJFrame extends javax.swing.JFrame {
         jLabel5 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Arduino RFID");
 
         jLabel1.setFont(new java.awt.Font("新細明體", 0, 48)); // NOI18N
         jLabel1.setText("卡號 : ");

@@ -10,9 +10,10 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class TwoWaySerialComm {
-
-    public TwoWaySerialComm() {
+    private static Callback callback;
+    public TwoWaySerialComm(Callback callback) {
         super();
+        this.callback = callback;
     }
 
     void connect(String portName) throws Exception {
@@ -61,6 +62,9 @@ public class TwoWaySerialComm {
                         // fulldata = 收到完整的 Arduino 資訊
                         String fulldata = sb.toString().replace("\r", "").replace("\n", "");
                         System.out.printf("收到資料: %s, 資料長度: %d\n", fulldata, fulldata.length());
+                        if(callback != null) {
+                            callback.setValue(fulldata);
+                        }
                         sb = new StringBuilder();
                     } else {
                         sb.append(data);
@@ -97,7 +101,7 @@ public class TwoWaySerialComm {
 
     public static void main(String[] args) {
         try {
-            (new TwoWaySerialComm()).connect("COM7");
+            (new TwoWaySerialComm(null)).connect("COM7");
         } catch (Exception e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
