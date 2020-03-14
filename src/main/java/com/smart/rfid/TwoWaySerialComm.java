@@ -57,7 +57,7 @@ public class TwoWaySerialComm {
                     //System.out.print(new String(buffer, 0, len));
                     String data = new String(buffer, 0, len);
                     //System.out.print(data);
-                    if(data.trim().equals("") && sb.length() > 0) {
+                    if(data.trim().equals("") && sb.length() > 5) {
                         // fulldata = 收到完整的 Arduino 資訊
                         String fulldata = sb.toString().replace("\r", "").replace("\n", "");
                         System.out.printf("收到資料: %s, 資料長度: %d\n", fulldata, fulldata.length());
