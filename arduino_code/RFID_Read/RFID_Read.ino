@@ -20,6 +20,7 @@ RFID rfid(SS_PIN, RST_PIN);
 
 void setup() {
   Serial.begin(9600);
+  delay(1000);
   pinMode(BUZZER_PIN, OUTPUT);
   SPI.begin();
   rfid.init();
