@@ -6,6 +6,7 @@
 #define SS_PIN 10
 #define RST_PIN 9
 #define BUZZER_PIN 8
+#define RELAY_PIN 6
 
 RFID rfid(SS_PIN, RST_PIN);
 HTU21D htu; // 宣告 HTU21D
@@ -23,12 +24,16 @@ void setup() {
   Serial.begin(9600);
   delay(1) ;
   pinMode(BUZZER_PIN, OUTPUT);
+  pinMode(RELAY_PIN, OUTPUT);
   SPI.begin();
   rfid.init();
   htu.begin();
+  digitalWrite(RELAY_PIN, HIGH);
   t.every(50, readRFID);
   t.every(50, readHTU21D);
+  t.every(50, listenerRelay);
   t.every(50, sendData);
+  
 }
 
 void loop() {
@@ -56,6 +61,18 @@ void readHTU21D() {
   temp = temperature;
   humi = humidity;
 }
+
+void listenerRelay() {
+  if (Serial.available()) {
+    char data = Serial.read();
+    if(data == '1') {
+      digitalWrite(RELAY_PIN, LOW);  
+    } else if(data == '0') {
+      digitalWrite(RELAY_PIN, HIGH);
+    }
+  }
+}
+
 void readRFID() {
   //-----------------------------------
   if (rfid.isCard()) {  //　檢查是否偵測到RFID Tag ? 並回傳true/false

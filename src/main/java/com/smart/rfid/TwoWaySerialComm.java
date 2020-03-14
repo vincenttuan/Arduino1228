@@ -61,7 +61,7 @@ public class TwoWaySerialComm {
                     if(data.trim().equals("") && sb.length() > 5) {
                         // fulldata = 收到完整的 Arduino 資訊
                         String fulldata = sb.toString().replace("\r", "").replace("\n", "");
-                        System.out.printf("收到資料: %s, 資料長度: %d\n", fulldata, fulldata.length());
+                        //System.out.printf("收到資料: %s, 資料長度: %d\n", fulldata, fulldata.length());
                         if(callback != null) {
                             callback.setValue(fulldata);
                         }
@@ -90,10 +90,21 @@ public class TwoWaySerialComm {
         public void run() {
             try {
                 int c = 0;
-                while ((c = System.in.read()) > -1) {
-                    this.out.write(c);
+                //while ((c = System.in.read()) > -1) {
+                //    this.out.write(c);
+                //    System.out.println(c);
+                //}
+                while (true) {             
+                    if(callback != null) {
+                        c = callback.getRelayValue()?48:49;
+                        this.out.write(c);
+                        this.out.write(10);
+                        System.out.println(c);
+                    }
+                    Thread.sleep(1000);
                 }
-            } catch (IOException e) {
+                
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }

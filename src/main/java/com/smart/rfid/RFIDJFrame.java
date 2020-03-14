@@ -11,20 +11,20 @@ package com.smart.rfid;
  */
 public class RFIDJFrame extends javax.swing.JFrame {
 
+    private Callback callback = new Callback() {
+        @Override
+        public void setValue(String fulldata) {
+            String[] dataArray = fulldata.split(",");
+            if (dataArray.length >= 4) {
+                rfid_id_label.setText(dataArray[0]);
+                rfid_balance_label.setText(dataArray[1]);
+                temp_label.setText(dataArray[2]);
+                humi_label.setText(dataArray[3]);
+            }
+        }
+    };
     public RFIDJFrame() {
         initComponents();
-        Callback callback = new Callback() {
-            @Override
-            public void setValue(String fulldata) {
-                String[] dataArray = fulldata.split(",");
-                if (dataArray.length >= 4) {
-                    rfid_id_label.setText(dataArray[0]);
-                    rfid_balance_label.setText(dataArray[1]);
-                    temp_label.setText(dataArray[2]);
-                    humi_label.setText(dataArray[3]);
-                }
-            }
-        };
         try {
             (new TwoWaySerialComm(callback)).connect("COM7");
         } catch (Exception e) {
@@ -49,87 +49,104 @@ public class RFIDJFrame extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         humi_label = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        relay_btn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Arduino RFID");
 
-        jLabel1.setFont(new java.awt.Font("新細明體", 0, 48)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("微軟正黑體", 0, 48)); // NOI18N
         jLabel1.setText("卡號 : ");
 
-        rfid_id_label.setFont(new java.awt.Font("新細明體", 0, 48)); // NOI18N
+        rfid_id_label.setFont(new java.awt.Font("Maiandra GD", 0, 48)); // NOI18N
+        rfid_id_label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         rfid_id_label.setText("-");
 
-        jLabel2.setFont(new java.awt.Font("新細明體", 0, 48)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("微軟正黑體", 0, 48)); // NOI18N
         jLabel2.setText("餘額 : ");
 
-        rfid_balance_label.setFont(new java.awt.Font("新細明體", 0, 48)); // NOI18N
+        rfid_balance_label.setFont(new java.awt.Font("Consolas", 0, 48)); // NOI18N
+        rfid_balance_label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         rfid_balance_label.setText("0");
 
-        temp_label.setFont(new java.awt.Font("新細明體", 0, 48)); // NOI18N
+        temp_label.setFont(new java.awt.Font("Verdana", 0, 48)); // NOI18N
         temp_label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         temp_label.setText("-");
 
-        jLabel4.setFont(new java.awt.Font("新細明體", 0, 48)); // NOI18N
+        jLabel4.setFont(new java.awt.Font("Verdana", 0, 48)); // NOI18N
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("°C");
 
-        humi_label.setFont(new java.awt.Font("新細明體", 0, 48)); // NOI18N
+        humi_label.setFont(new java.awt.Font("Verdana", 0, 48)); // NOI18N
         humi_label.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         humi_label.setText("-");
 
-        jLabel5.setFont(new java.awt.Font("新細明體", 0, 48)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Verdana", 0, 48)); // NOI18N
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("%");
+
+        relay_btn.setFont(new java.awt.Font("Microsoft YaHei", 0, 36)); // NOI18N
+        relay_btn.setText("Relay");
+        relay_btn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                relay_btnActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(temp_label, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(44, 44, 44)
-                        .addComponent(humi_label, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel5))
+                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel1)
                             .addComponent(jLabel2))
                         .addGap(31, 31, 31)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(rfid_id_label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(rfid_balance_label, javax.swing.GroupLayout.DEFAULT_SIZE, 453, Short.MAX_VALUE))))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(rfid_id_label, javax.swing.GroupLayout.PREFERRED_SIZE, 453, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(rfid_balance_label, javax.swing.GroupLayout.PREFERRED_SIZE, 229, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addComponent(relay_btn, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(temp_label, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 83, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(humi_label, javax.swing.GroupLayout.PREFERRED_SIZE, 207, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 63, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(42, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(22, 22, 22)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(rfid_id_label)
-                    .addComponent(jLabel1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(rfid_id_label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel2)
-                    .addComponent(rfid_balance_label))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(rfid_balance_label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(relay_btn, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(39, 39, 39)
-                        .addComponent(temp_label, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(humi_label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                .addContainerGap(31, Short.MAX_VALUE))
+                    .addComponent(humi_label, javax.swing.GroupLayout.DEFAULT_SIZE, 165, Short.MAX_VALUE)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(temp_label, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void relay_btnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_relay_btnActionPerformed
+        callback.setRelayValue();
+    }//GEN-LAST:event_relay_btnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -172,6 +189,7 @@ public class RFIDJFrame extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
+    private javax.swing.JButton relay_btn;
     private javax.swing.JLabel rfid_balance_label;
     private javax.swing.JLabel rfid_id_label;
     private javax.swing.JLabel temp_label;
