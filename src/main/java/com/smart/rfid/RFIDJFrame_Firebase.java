@@ -5,12 +5,29 @@
  */
 package com.smart.rfid;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Random;
+import net.thegreshams.firebase4j.model.FirebaseResponse;
+import net.thegreshams.firebase4j.service.Firebase;
+
 /**
  *
  * @author MB-teacher
  */
 public class RFIDJFrame_Firebase extends javax.swing.JFrame {
-
+    
+    String firebase_baseUrl = "https://iot-pcschool.firebaseio.com/house";
+    String token = "5lXpVgfZlmpjCNR4YzIDMDrh29Mw7kAp3zzhnSC4";
+    Firebase firebase = null;
+    // create the firebase
+    {
+        try {
+            firebase = new Firebase(firebase_baseUrl, token);
+        } catch (Throwable e) {
+        }
+    }
+    
     private Callback callback = new Callback() {
         @Override
         public void setValue(String fulldata) {
@@ -20,6 +37,16 @@ public class RFIDJFrame_Firebase extends javax.swing.JFrame {
                 rfid_balance_label.setText(dataArray[1]);
                 temp_label.setText(dataArray[2]);
                 humi_label.setText(dataArray[3]);
+                // 將資料上傳 firebase
+                try {
+                    Map<String, Object> dataMap = new LinkedHashMap<>();
+                    dataMap.put("rfid_id", dataArray[0]);
+                    dataMap.put("rfid_balance", Integer.parseInt(dataArray[1]));
+                    dataMap.put("temp", Double.parseDouble(dataArray[2]));
+                    dataMap.put("humi", Double.parseDouble(dataArray[3]));
+                    FirebaseResponse response = firebase.patch(dataMap);
+                } catch (Throwable e) {
+                }
             }
         }
     };
